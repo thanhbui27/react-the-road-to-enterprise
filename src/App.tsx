@@ -1,26 +1,14 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
+import './App.scss'
+import AnimalExample from '@/components/AnimalExample'
+import AnimalExampleWithApiStatus from './components/AnimalExampleWithApiStatus'
+import SearchMealExample from './components/SearchMealsExample'
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App mx-auto max-w-6xl text-center my-8'>
+      <h1 className='text font-semibold text-2xl'>React - The Road To Enterprise</h1>
+      <AnimalExampleWithApiStatus />
+      <SearchMealExample />
     </div>
-  );
+  )
 }
-
-export default App;
+export default App
