@@ -3,9 +3,9 @@ module.exports = {
   plugins: {
     tailwindcss: {},
     autoprefixer: {},
-    stylelint: {
-      configFile: "stylelint.config.cjs",
-    },
+    // stylelint: {
+    //   configFile: "stylelint.config.cjs",
+    // },
     "postcss-extend": {},
     "postcss-preset-env": {},
     "postcss-nested": {},
