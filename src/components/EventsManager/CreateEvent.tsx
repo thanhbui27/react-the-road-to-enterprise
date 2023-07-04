@@ -94,6 +94,7 @@ const CreateEvent = (props: CreateEventProps) => {
             onChange={onChange}
           />
         </div>
+        254
         <div className="flex flex-col items-stretch text-left space-y-2">
           <label className="font-semibold" htmlFor="startDate">
             Start Date

@@ -1,13 +1,16 @@
+import { useAtom, useAtomValue } from "jotai";
+import { selectedEventAtom, selectedEventIdAtom } from "./eventsAtoms";
 import { useQuery } from "react-query";
-import { useEventsStore } from "./eventsStore";
-import { Event, EventsQueryState } from "./eventsTypes";
+import { EventsQueryState } from "./eventsTypes";
+import { useMemo } from "react";
 type EventDetailsProps = object;
 const EventDetails = (props: EventDetailsProps) => {
   const { data } = useQuery<EventsQueryState>(["events"]);
-  const event = useEventsStore((state) => {
-    if (!state.selectedEvent) return;
-    return data?.allEvents.find((event : any) => event.id === state.selectedEvent);
-  });
+  const selectedEventId = useAtomValue(selectedEventIdAtom);
+  const event = useMemo(() => {
+    if (!selectedEventId) return;
+    return data?.allEvents.find((event) => event.id === selectedEventId);
+  }, [selectedEventId]);
   return (
     <div>
       <h2 className="font-semibold text-xl mb-6">Selected Event Details</h2>
@@ -28,7 +31,7 @@ const EventDetails = (props: EventDetailsProps) => {
             </p>
             <span className="mb-1 font-semibold block">End</span>
             <p>
-              {event.endDate} at {event.endTime}
+              {event.endDate} at {event.endTime}{" "}
             </p>
           </div>
         </div>
