@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { useEventsStore } from "./eventsStore";
-import { Event } from "./eventsTypes";
+import { useMutation, useQueryClient } from "react-query";
+import { createEvent } from "@/api/eventApi";
+import { Event, EventsQueryState } from "./eventsTypes";
 type CreateEventProps = object;
 const createId = () => "_" + Math.random().toString(36).substr(2, 9);
 const initialState: Omit<Event, "id"> = {
@@ -15,7 +16,43 @@ const formatDate = (date: string) => {
 };
 const CreateEvent = (props: CreateEventProps) => {
   const [form, setForm] = useState(initialState);
-  const createEvent = useEventsStore((state) => state.createEvent);
+  const queryClient = useQueryClient();
+  const {
+    mutate: initCreateEvent,
+    isLoading: createEventLoading,
+    isError: createEventError,
+  } = useMutation(["createEvent"], createEvent, {
+    onMutate: async (event) => {
+      await queryClient.cancelQueries(["events"]);
+      const previousEvents = queryClient.getQueryData<EventsQueryState>([
+        "events",
+      ]);
+      if (previousEvents) {
+        queryClient.setQueryData(["events"], {
+          ...previousEvents,
+          allEvents: [event, ...previousEvents.allEvents],
+          upcomingEvents: [event, ...previousEvents.allEvents],
+        });
+      }
+      return {
+        previousEvents,
+      };
+    },
+    onError: (
+      err,
+      variables,
+      context?: {
+        previousEvents?: EventsQueryState;
+      }
+    ) => {
+      if (context?.previousEvents) {
+        queryClient.setQueryData(["events"], context.previousEvents);
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(["events"]);
+    },
+  });
   const onCreateEvent = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (
@@ -26,7 +63,7 @@ const CreateEvent = (props: CreateEventProps) => {
       !form.endTime
     )
       return;
-    createEvent({
+    initCreateEvent({
       ...form,
       id: createId(),
       startDate: formatDate(form.startDate),
@@ -37,7 +74,6 @@ const CreateEvent = (props: CreateEventProps) => {
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((state) => ({
       ...state,
-
       [e.target.name]: e.target.value,
     }));
   };
@@ -110,11 +146,13 @@ const CreateEvent = (props: CreateEventProps) => {
             onChange={onChange}
           />
         </div>
+        {createEventError ? <p>Could not create the event</p> : null}
         <button
           className="w-36 self-end bg-blue-700 text-blue-100 px-4 py-3"
+          disabled={createEventLoading}
           onClick={onCreateEvent}
         >
-          Create Event
+          {createEventLoading ? "Creating..." : "Create Event"}
         </button>
       </form>
     </div>

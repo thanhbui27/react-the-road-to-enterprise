@@ -9,10 +9,11 @@ type DisplayEventsProps = object;
 const getUpcomingAndPastEvents = (events: Event[] = []) => {
   const upcomingEvents: Event[] = [];
   const pastEvents: Event[] = [];
+
   for (const event of events) {
     const [day, month, year] = event.endDate
       .split("/")
-      .map((item: any) => parseInt(item));
+      .map((item) => parseInt(item));
     const [hour, minute] = event.endTime.split(":");
     const isUpcoming =
       new Date(year, month - 1, day, parseInt(hour), parseInt(minute)) >
@@ -60,7 +61,6 @@ const DisplayEvents = (props: DisplayEventsProps) => {
       <h2 className="font-semibold text-xl mb-6">Events</h2>
       <EventsTabs activeTab={eventsToShow} setActiveTab={setEventsToShow} />
       <div className="mt-4">
-        231
         <ul className="text-left shadow py-4 space-y-3 divide-y">
           {fetchEventsLoading ? (
             <div className="text-center">

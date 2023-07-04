@@ -6,3 +6,8 @@ export type Event = {
   endDate: string;
   endTime: string;
 };
+export type EventsQueryState = {
+  allEvents: Event[];
+  upcomingEvents: Event[];
+  pastEvents: Event[];
+};

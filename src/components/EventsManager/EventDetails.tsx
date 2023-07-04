@@ -1,10 +1,12 @@
+import { useQuery } from "react-query";
 import { useEventsStore } from "./eventsStore";
+import { Event, EventsQueryState } from "./eventsTypes";
 type EventDetailsProps = object;
 const EventDetails = (props: EventDetailsProps) => {
-  
-  const event = useEventsStore((state: any) => {
+  const { data } = useQuery<EventsQueryState>(["events"]);
+  const event = useEventsStore((state) => {
     if (!state.selectedEvent) return;
-    return state.events.find((event: any) => event.id === state.selectedEvent);
+    return data?.allEvents.find((event : any) => event.id === state.selectedEvent);
   });
   return (
     <div>
@@ -26,7 +28,7 @@ const EventDetails = (props: EventDetailsProps) => {
             </p>
             <span className="mb-1 font-semibold block">End</span>
             <p>
-              {event.endDate} at {event.endTime}{" "}
+              {event.endDate} at {event.endTime}
             </p>
           </div>
         </div>
