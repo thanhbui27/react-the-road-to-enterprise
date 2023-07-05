@@ -7,6 +7,7 @@ import DisplayBlogPosts from "./components/hocs/DisplayBlogPosts";
 import DisplayUsers from "./components/render-props/DisplayUsers";
 import WrapperComponent from "./components/wrapper/WrapperComponent";
 import PolymorphicComponents from "./components/polymorphic/PolymorphicComponents";
+import CompositionConfiguration from "./components/composition-confguration/CompositionConfguration";
 const queryClient = new QueryClient();
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <DisplayUsers />
         <WrapperComponent />
         <PolymorphicComponents />
+        <CompositionConfiguration />
       </div>
     </QueryClientProvider>
   );
