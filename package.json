@@ -15,15 +15,20 @@
     "cypress:open": "cypress open"
   },
   "dependencies": {
+    "@faker-js/faker": "^8.0.2",
     "@fastify/cors": "^8.3.0",
     "axios": "^1.4.0",
     "clsx": "^1.2.1",
+    "concurrently": "^8.2.0",
     "immer": "^10.0.2",
     "jotai": "^2.2.1",
     "jotai-immer": "^0.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-query": "^3.39.3",
+    "react-router-dom": "^6.14.1",
+    "react-virtual": "^2.10.4",
+    "react-virtualized": "^9.22.5",
     "zustand": "^4.3.8"
   },
   "husky": {
