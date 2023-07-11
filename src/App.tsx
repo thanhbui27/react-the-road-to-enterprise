@@ -1,13 +1,26 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import "./App.css";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Navigate, Route, Routes } from "react-router-dom";
 import Spinner from "./components/Spinner";
+import { useUserStore } from "./store/userStore";
+import Permission from "./components/common/permission/Permission";
 const queryClient = new QueryClient();
 const About = lazy(() => import("./views/About"));
 const Contact = lazy(() => import("./views/Contact"));
 const Home = lazy(() => import("./views/Home"));
+const Admin = lazy(() => import("./views/Admin"));
+const Forbidden = lazy(() => import("./views/Forbidden"));
+const Moderator = lazy(() => import("./views/Moderator"));
 function App() {
+  const setUser = useUserStore((store) => store.setUser);
+  useEffect(() => {
+    setUser({
+      id: "1",
+      name: "Thomas",
+      roles: ['moderator','admin'],
+    });
+  }, []);
   return (
     <QueryClientProvider client={queryClient}>
       <div className="App mx-auto max-w-6xl text-center my-8">
@@ -19,6 +32,8 @@ function App() {
             <Link to="/">Home</Link>
             <Link to="/about">About</Link>
             <Link to="/contact">Contact</Link>
+            <Link to="/admin">Admin</Link>
+            <Link to="/moderator">Moderator</Link>
           </nav>
         </div>
         <Suspense
@@ -32,6 +47,29 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route
+              path="/admin"
+              element={
+                <Permission
+                  roles={["admin"]}
+                  noAccess={<Navigate to="/forbidden" />}
+                >
+                  <Admin />
+                </Permission>
+              }
+            />
+            <Route
+              path="/moderator"
+              element={
+                <Permission
+                  roles={["moderator", "admin"]}
+                  noAccess={<Navigate to="/forbidden" />}
+                >
+                  <Moderator />
+                </Permission>
+              }
+            />
+            <Route path="/forbidden" element={<Forbidden />} />
           </Routes>
         </Suspense>
       </div>
