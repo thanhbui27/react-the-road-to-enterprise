@@ -18,7 +18,7 @@ function App() {
     setUser({
       id: "1",
       name: "Thomas",
-      roles: ['moderator','admin'],
+      roles: [],
     });
   }, []);
   return (

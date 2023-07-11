@@ -22,9 +22,6 @@ const commentsData = [
 ];
 const Home = (props: HomeProps) => {
   const [comments, setComments] = useState(commentsData);
-
-  366;
-
   return (
     <div className="max-w-[40rem] mx-auto">
       <h1 className="text-2xl font-bold my-4">Comments</h1>
