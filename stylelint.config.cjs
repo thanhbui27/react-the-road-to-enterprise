@@ -17,7 +17,7 @@ module.exports = {
           // --------
           // Tailwind
           // --------
-          "tailwind",
+          // "tailwind",
           "apply",
           "variants",
           "responsive",
